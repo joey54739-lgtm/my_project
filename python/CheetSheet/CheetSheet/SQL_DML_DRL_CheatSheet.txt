@@ -1,0 +1,170 @@
+
+==============================
+SQL DML / DRL CHEAT SHEET
+(Focus: SELECT Statements)
+==============================
+
+1️⃣ BASIC SELECT
+------------------------------
+SELECT column1, column2 FROM table_name;
+SELECT * FROM Sales;
+
+2️⃣ FILTERING DATA (WHERE)
+------------------------------
+SELECT * FROM Sales WHERE Quantity > 10;
+
+Operators:
+=, != or <>, >, <, >=, <=
+BETWEEN ... AND ...
+IN (...)
+LIKE 'A%'
+IS NULL / IS NOT NULL
+
+Examples:
+SELECT * FROM Sales WHERE Product = 'Apple';
+SELECT * FROM Sales WHERE Quantity BETWEEN 5 AND 10;
+SELECT * FROM Sales WHERE Product IN ('Apple','Banana');
+SELECT * FROM Sales WHERE Product LIKE 'A%';
+
+3️⃣ COMBINE CONDITIONS
+------------------------------
+SELECT * FROM Sales WHERE Quantity > 5 AND Price < 100;
+SELECT * FROM Sales WHERE Product = 'Apple' OR Product = 'Banana';
+
+4️⃣ SORTING RESULTS (ORDER BY)
+------------------------------
+SELECT Product, Total FROM Sales ORDER BY Total DESC;
+ASC = ascending (default)
+DESC = descending
+
+5️⃣ LIMIT RESULTS
+------------------------------
+SELECT * FROM Sales ORDER BY Total DESC LIMIT 5;
+
+6️⃣ AGGREGATE FUNCTIONS
+------------------------------
+COUNT() – number of rows
+SUM() – total of values
+AVG() – average
+MIN() – minimum value
+MAX() – maximum value
+
+Examples:
+SELECT COUNT(*) FROM Sales;
+SELECT SUM(Total) FROM Sales;
+SELECT AVG(Price) FROM Sales;
+
+7️⃣ GROUPING DATA (GROUP BY)
+------------------------------
+SELECT Product, SUM(Quantity) AS TotalQuantity
+FROM Sales
+GROUP BY Product;
+
+8️⃣ FILTER GROUPS (HAVING)
+------------------------------
+SELECT Product, SUM(Total) AS TotalSales
+FROM Sales
+GROUP BY Product
+HAVING SUM(Total) > 5000;
+
+9️⃣ JOINS
+------------------------------
+INNER JOIN – matching rows from both tables
+LEFT JOIN – all from left + matched from right
+
+Examples:
+SELECT * FROM Orders INNER JOIN Customers
+ON Orders.CustomerID = Customers.CustomerID;
+
+SELECT * FROM Orders LEFT JOIN Customers
+ON Orders.CustomerID = Customers.CustomerID;
+
+🔟 ALIASES
+------------------------------
+SELECT Product AS Item, SUM(Total) AS Sales
+FROM Sales AS S
+GROUP BY S.Product;
+
+1️⃣1️⃣ SUBQUERIES
+------------------------------
+SELECT Product, Total
+FROM Sales
+WHERE Total > (SELECT AVG(Total) FROM Sales);
+
+1️⃣2️⃣ DATE FUNCTIONS (SQLite)
+------------------------------
+strftime('%Y', Date) – Year
+strftime('%m', Date) – Month
+strftime('%d', Date) – Day
+date('now') – Current Date
+
+Examples:
+SELECT SUM(Total) FROM Sales WHERE strftime('%Y', Date)='2023';
+
+1️⃣3️⃣ DISTINCT & ALIASES
+------------------------------
+SELECT DISTINCT Product FROM Sales;
+SELECT Product AS ItemName, Price AS UnitPrice FROM Sales;
+
+1️⃣4️⃣ COMMON QUERIES
+------------------------------
+Total Sales in 2023:
+SELECT SUM(Total) FROM Sales WHERE strftime('%Y', Date)='2023';
+
+Total Quantity per Product:
+SELECT Product, SUM(Quantity) FROM Sales GROUP BY Product;
+
+Highest Selling Product:
+SELECT Product, SUM(Total) AS TotalSales
+FROM Sales
+GROUP BY Product
+ORDER BY TotalSales DESC
+LIMIT 1;
+
+Monthly Sales Trend:
+SELECT strftime('%m', Date) AS Month, SUM(Total) AS MonthlySales
+FROM Sales
+GROUP BY Month
+ORDER BY Month;
+
+Products with Average Price > 50:
+SELECT Product, AVG(Price) AS AvgPrice
+FROM Sales
+GROUP BY Product
+HAVING AvgPrice > 50;
+
+1️⃣5️⃣ COMBINING MULTIPLE SELECTS
+------------------------------
+UNION – combine unique results
+UNION ALL – combine with duplicates
+
+Example:
+SELECT Product FROM Sales2023 UNION SELECT Product FROM Sales2024;
+SELECT Product FROM Sales2023 UNION ALL SELECT Product FROM Sales2024;
+
+1️⃣6️⃣ EXECUTION ORDER
+------------------------------
+1. FROM
+2. WHERE
+3. GROUP BY
+4. HAVING
+5. SELECT
+6. ORDER BY
+7. LIMIT
+
+1️⃣7️⃣ QUICK SUMMARY TABLE
+------------------------------
+BASIC: SELECT, FROM
+FILTERING: WHERE, BETWEEN, IN, LIKE, IS NULL
+SORTING: ORDER BY, ASC, DESC
+AGGREGATION: SUM, AVG, COUNT, MIN, MAX
+GROUPING: GROUP BY, HAVING
+JOINS: INNER JOIN, LEFT JOIN
+SET OPS: UNION, UNION ALL
+LIMITING: LIMIT
+MISC: DISTINCT, AS (alias)
+DATE: strftime() functions
+
+==============================
+END OF SQL DML / DRL CHEAT SHEET
+==============================
